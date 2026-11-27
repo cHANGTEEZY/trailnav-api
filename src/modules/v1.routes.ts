@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import { healthRoutes } from "./health/health.routes";
+import { safetyRoutes } from "./safety/safety.routes";
+import { syncRoutes } from "./sync/sync.routes";
 import { tracksRoutes } from "./tracks/tracks.routes";
 import { trailsRoutes } from "./trails/trails.routes";
 import { usersRoutes } from "./users/users.routes";
@@ -13,3 +15,5 @@ apiV1Router.route("/trails", trailsRoutes);
 apiV1Router.route("/tracks", tracksRoutes);
 apiV1Router.route("/waypoints", waypointsRoutes);
 apiV1Router.route("/search", searchRoutes);
+apiV1Router.route("/safety-reports", safetyRoutes);
+apiV1Router.route("/sync", syncRoutes);
