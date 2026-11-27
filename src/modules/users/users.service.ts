@@ -1,3 +1,4 @@
+import type { UserRole } from "../../db/schema/auth";
 import { usersRepository } from "./users.repository";
 import type { PublicUser } from "./users.types";
 
@@ -7,6 +8,7 @@ function toPublicUser(record: {
   email: string;
   emailVerified: boolean;
   image: string | null;
+  role: UserRole;
   createdAt: Date;
   updatedAt: Date;
 }): PublicUser {
@@ -16,6 +18,7 @@ function toPublicUser(record: {
     email: record.email,
     emailVerified: record.emailVerified,
     image: record.image,
+    role: record.role,
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
   };
