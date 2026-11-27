@@ -21,6 +21,8 @@ export function registerOpenApiDocs(app: Hono<{ Variables: AppVariables }>) {
           { name: "Tracks", description: "Recorded GPS tracks and GPX 1.1 import/export" },
           { name: "Waypoints", description: "Nearby POIs, teahouses, and water sources" },
           { name: "Search", description: "Unified trail and waypoint search" },
+          { name: "Safety", description: "Trail hazard reports and resolution" },
+          { name: "Sync", description: "Offline-first two-way SQLite sync protocol" },
         ],
         components: {
           securitySchemes: {
