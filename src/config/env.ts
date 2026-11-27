@@ -59,12 +59,25 @@ const envSchema = z.object({
     .default("info"),
   CORS_ORIGIN: z.string().default("*"),
   FRONTEND_ORIGIN: z.string(),
+  MOBILE_APP_SCHEME: z.string().default("trailnav://"),
   DATABASE_URL: z.string().min(1),
   DATABASE_URL_UNPOOLED: z.string().optional(),
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.string().default("http://localhost:3000"),
   ARCJET_KEY: z.string().min(1),
   ARCJET_ENV: z.enum(["development", "production"]).default("development"),
+  PACK_CDN_BASE_URL: z.string().default("https://packs.trailnav.np/v1"),
+  R2_ACCOUNT_ID: z.string().optional(),
+  R2_ACCESS_KEY_ID: z.string().optional(),
+  R2_SECRET_ACCESS_KEY: z.string().optional(),
+  R2_BUCKET_NAME: z.string().optional(),
+  R2_PUBLIC_BASE_URL: z.string().optional(),
+  R2_PRESIGN_EXPIRY_SECONDS: z.coerce
+    .number()
+    .int()
+    .min(60)
+    .max(3600)
+    .default(900),
 });
 
 const raw = envSchema.parse(process.env);
@@ -76,7 +89,7 @@ function normalizeOrigin(url: string): string {
     .replace(/\/$/, "");
   if (u === "*") return "*";
   if (!u) return u;
-  if (!/^https?:\/\//i.test(u)) {
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(u)) {
     u = `http://${u}`;
   }
   return u;
@@ -91,6 +104,14 @@ export const trustedFrontendOrigins: string[] = (() => {
     .filter(Boolean);
   return [...new Set([...LOCAL_DEV_ORIGINS, ...fromEnv])];
 })();
+
+export const trustedAuthOrigins: string[] = [
+  ...new Set([
+    ...trustedFrontendOrigins,
+    raw.MOBILE_APP_SCHEME,
+    "exp://",
+  ]),
+];
 
 export const corsCredentialsEnabled = normalizeOrigin(raw.CORS_ORIGIN) !== "*";
 
