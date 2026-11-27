@@ -17,6 +17,9 @@ export function registerOpenApiDocs(app: Hono<{ Variables: AppVariables }>) {
           { name: "Health", description: "Service health endpoints" },
           { name: "Auth", description: "Better Auth endpoints" },
           { name: "Users", description: "User profile endpoints" },
+          { name: "Trails", description: "Spatial Nepal trekking trails API" },
+          { name: "Waypoints", description: "Nearby POIs, teahouses, and water sources" },
+          { name: "Search", description: "Unified trail and waypoint search" },
         ],
         components: {
           securitySchemes: {
