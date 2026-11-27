@@ -25,6 +25,7 @@ export function registerOpenApiDocs(app: Hono<{ Variables: AppVariables }>) {
           { name: "Sync", description: "Offline-first two-way SQLite sync protocol" },
           { name: "Packs", description: "Regional offline MBTiles & DEM pack manifests" },
           { name: "Media", description: "Cloudflare R2 presigned upload URLs" },
+          { name: "Moderation", description: "Ranger & admin trail verification and hazard triage" },
         ],
         components: {
           securitySchemes: {
