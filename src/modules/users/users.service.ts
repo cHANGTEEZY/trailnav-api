@@ -1,17 +1,13 @@
-import type { UserRole } from "../../db/schema/auth";
-import { usersRepository } from "./users.repository";
+import {
+  usersRepository,
+  type TrekkerStats,
+  type UserRecord,
+  type UsersRepository,
+} from "./users.repository";
 import type { PublicUser } from "./users.types";
+import type { UpdateProfileBody } from "./users.validator";
 
-function toPublicUser(record: {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: boolean;
-  image: string | null;
-  role: UserRole;
-  createdAt: Date;
-  updatedAt: Date;
-}): PublicUser {
+function toPublicUser(record: UserRecord): PublicUser {
   return {
     id: record.id,
     name: record.name,
@@ -24,10 +20,27 @@ function toPublicUser(record: {
   };
 }
 
-export const usersService = {
-  async getProfile(userId: string) {
-    const record = await usersRepository.findById(userId);
-    if (!record) return null;
-    return toPublicUser(record);
-  },
-};
+export function createUsersService(repo: UsersRepository = usersRepository) {
+  return {
+    async getProfile(userId: string): Promise<PublicUser | null> {
+      const record = await repo.findById(userId);
+      if (!record) return null;
+      return toPublicUser(record);
+    },
+
+    async updateProfile(
+      userId: string,
+      patch: UpdateProfileBody,
+    ): Promise<PublicUser | null> {
+      const updated = await repo.updateProfile(userId, patch);
+      if (!updated) return null;
+      return toPublicUser(updated);
+    },
+
+    async getStats(userId: string): Promise<TrekkerStats> {
+      return repo.getStats(userId);
+    },
+  };
+}
+
+export const usersService = createUsersService();

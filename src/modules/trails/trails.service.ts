@@ -1,5 +1,6 @@
 import { computeBoundingBox } from "../../db/postgis";
 import type { UserRole } from "../../db/schema/auth";
+import { serializeToGpxXml } from "../../shared/geo/gpx";
 import type { PaginationMeta } from "../../shared/http/response";
 import {
   trailsRepository,
@@ -44,6 +45,26 @@ export function createTrailsService(repo: TrailsRepository = trailsRepository) {
 
     async getTrailByIdOrSlug(idOrSlug: string): Promise<TrailDetailRecord | null> {
       return repo.findByIdOrSlug(idOrSlug);
+    },
+
+    async exportTrailGpx(
+      idOrSlug: string,
+    ): Promise<{ filename: string; xml: string } | null> {
+      const trail = await repo.findByIdOrSlug(idOrSlug);
+      if (!trail) return null;
+
+      const xml = serializeToGpxXml({
+        name: trail.title,
+        description: trail.description,
+        line: trail.geom,
+        waypoints: trail.waypoints,
+        startedAtIso: trail.updatedAt,
+      });
+
+      return {
+        filename: `${trail.slug}.gpx`,
+        xml,
+      };
     },
 
     async createTrail(

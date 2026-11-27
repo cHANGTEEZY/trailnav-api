@@ -62,6 +62,14 @@ export const trailsDocs = {
       404: { description: "Trail not found" },
     },
   },
+  exportGpx: {
+    tags: trailsTags,
+    summary: "Export trail geometry and waypoints as GPX 1.1 XML",
+    responses: {
+      200: { description: "GPX 1.1 XML document" },
+      404: { description: "Trail not found" },
+    },
+  },
   create: {
     tags: trailsTags,
     summary: "Submit a new community trail",
