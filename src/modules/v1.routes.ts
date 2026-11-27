@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { healthRoutes } from "./health/health.routes";
 import { mediaRoutes } from "./media/media.routes";
+import { moderationRoutes } from "./moderation/moderation.routes";
 import { packsRoutes } from "./packs/packs.routes";
 import { safetyRoutes } from "./safety/safety.routes";
 import { syncRoutes } from "./sync/sync.routes";
@@ -21,3 +22,4 @@ apiV1Router.route("/safety-reports", safetyRoutes);
 apiV1Router.route("/sync", syncRoutes);
 apiV1Router.route("/packs", packsRoutes);
 apiV1Router.route("/media", mediaRoutes);
+apiV1Router.route("/admin/moderation", moderationRoutes);
