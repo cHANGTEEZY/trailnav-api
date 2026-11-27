@@ -23,6 +23,8 @@ export function registerOpenApiDocs(app: Hono<{ Variables: AppVariables }>) {
           { name: "Search", description: "Unified trail and waypoint search" },
           { name: "Safety", description: "Trail hazard reports and resolution" },
           { name: "Sync", description: "Offline-first two-way SQLite sync protocol" },
+          { name: "Packs", description: "Regional offline MBTiles & DEM pack manifests" },
+          { name: "Media", description: "Cloudflare R2 presigned upload URLs" },
         ],
         components: {
           securitySchemes: {
