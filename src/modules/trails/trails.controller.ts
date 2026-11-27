@@ -71,6 +71,40 @@ export function createTrailsController(service = trailsService) {
       return sendSuccess(c, trail);
     },
 
+    async exportGpx(c: TrailsContext) {
+      const decision = await ajApi.protect(c.req.raw, {
+        correlationId: c.get("requestId"),
+      });
+      const denied = handleArcjetDecision(c, decision);
+      if (denied) return denied;
+
+      const idOrSlug = c.req.param("idOrSlug")?.trim();
+      if (!idOrSlug) {
+        const { body, status } = notFoundError(
+          c.get("requestId"),
+          "Trail not found",
+        );
+        return c.json(body, status);
+      }
+
+      const exported = await service.exportTrailGpx(idOrSlug);
+      if (!exported) {
+        const { body, status } = notFoundError(
+          c.get("requestId"),
+          "Trail not found",
+        );
+        return c.json(body, status);
+      }
+
+      return new Response(exported.xml, {
+        status: 200,
+        headers: {
+          "Content-Type": "application/gpx+xml; charset=utf-8",
+          "Content-Disposition": `attachment; filename="${exported.filename}"`,
+        },
+      });
+    },
+
     async create(c: TrailsContext) {
       const decision = await ajApi.protect(c.req.raw, {
         correlationId: c.get("requestId"),

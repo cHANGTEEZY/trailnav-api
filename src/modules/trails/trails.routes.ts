@@ -12,6 +12,9 @@ export function createTrailsRoutes(controller = trailsController) {
   const router = new Hono<{ Variables: AppVariables }>();
 
   router.get("/", describeRoute(trailsDocs.list), (c) => controller.list(c));
+  router.get("/:idOrSlug/gpx", describeRoute(trailsDocs.exportGpx), (c) =>
+    controller.exportGpx(c),
+  );
   router.get("/:idOrSlug", describeRoute(trailsDocs.getByIdOrSlug), (c) =>
     controller.getByIdOrSlug(c),
   );
